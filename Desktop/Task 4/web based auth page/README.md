@@ -1,6 +1,6 @@
 # Web-Based Auth Page
 
-This is a small PHP authentication project with a clean front-end and a MySQL-backed user table.
+This is a small PHP authentication project with a clean front-end and a PostgreSQL-backed user table.
 
 It includes:
 
@@ -14,10 +14,10 @@ It includes:
 ## Tech Stack
 
 - PHP
-- MySQL
+- PostgreSQL
 - HTML/CSS
 - JavaScript
-- XAMPP / Apache
+- PHP 8+ with PDO PostgreSQL support
 
 ## Project Structure
 
@@ -26,59 +26,56 @@ It includes:
 - `dashboard.php` — protected page shown after login
 - `logout.php` — destroys the session
 - `config/bootstrap.php` — session, env, and helper functions
-- `config/db.php` — PDO MySQL connection
+- `config/db.php` — PDO PostgreSQL connection
 - `assets/styles.css` — all styling
 - `assets/app.js` — password toggle and live password matching
 - `database/schema.sql` — `users` table schema
 
 ## Requirements
 
-- XAMPP installed
-- Apache running
-- MySQL running
-- PHP with the `pdo_mysql` extension enabled
+- PostgreSQL installed and running
+- PHP with the `pdo_pgsql` extension enabled
+- A web server for PHP, such as Apache, XAMPP, Laragon, or PHP's built-in server
 
-## Setup with XAMPP
+## Setup
 
-1. Copy the project folder to XAMPP’s web root:
-   - from: `C:\Users\HP\Desktop\Task 4\web based auth page`
-   - to: `C:\xampp\htdocs\auth-page`
+1. Make sure PostgreSQL is running.
 
-2. Start **Apache** and **MySQL** in the XAMPP Control Panel.
-
-3. Open phpMyAdmin in your browser:
-   - `http://localhost/phpmyadmin`
-
-4. Create a database named:
+2. Create a database named:
    - `auth_assignment`
 
-5. Open the database, click **Import**, and import:
+3. Run the SQL file to create the table:
    - `database/schema.sql`
 
-6. Update the `.env` file so the database values match your XAMPP setup:
+4. Update the `.env` file so the database values match your PostgreSQL setup:
 
    ```env
    DB_HOST=localhost
-   DB_PORT=3306
+   DB_PORT=5432
    DB_NAME=auth_assignment
-   DB_USER=root
-   DB_PASS=your_mysql_password
-   DB_CHARSET=utf8mb4
+   DB_USER=postgres
+   DB_PASS=your_postgresql_password
    ```
 
-   If your MySQL `root` user has no password, leave `DB_PASS` blank.
+   If your PostgreSQL user has no password, leave `DB_PASS` blank.
 
-7. Open the app in your browser:
-   - `http://localhost/auth-page/index.php`
-   - `http://localhost/auth-page/register.php`
+5. Start the app in your browser.
+
+   If you have PHP installed, you can use the built-in server from the project folder and open:
+   - `http://127.0.0.1:8000/index.php`
+   - `http://127.0.0.1:8000/register.php`
+
+   On Windows, you can also double-click `start.bat` to launch the local PHP server.
+
+   If you prefer Apache, place the project inside your web root and open the matching local URL.
 
    If Apache uses a different port, include it in the URL, for example:
-   - `http://localhost:8080/auth-page/index.php`
+   - `http://localhost:8080/index.php`
 
 ## How It Works
 
 - A new user registers with profile details, username, and password.
-- The password is hashed before being stored in MySQL.
+- The password is hashed before being stored in PostgreSQL.
 - The login page verifies the password with `password_verify()`.
 - After login, the user is redirected to the dashboard.
 - Logging out clears the session.
@@ -86,8 +83,8 @@ It includes:
 ## Database Notes
 
 - The `users` table stores the profile fields shown in the form.
-- `hobbies` is stored as JSON in MySQL.
-- `created_at` and `updated_at` are automatically maintained by MySQL.
+- `hobbies` is stored as `JSONB` in PostgreSQL.
+- `created_at` and `updated_at` are automatically maintained by PostgreSQL.
 
 ## GitHub Notes
 
@@ -96,9 +93,9 @@ It includes:
 
 ## Common Issues
 
-- If `php` is not recognized in PowerShell, use XAMPP Apache instead of the built-in PHP server.
-- If MySQL will not start, another service may already be using port `3306`.
-- If the browser shows a 404, make sure the project is inside `C:\xampp\htdocs\auth-page`.
+- If `php` is not recognized in PowerShell, use the PHP that ships with XAMPP, Laragon, or another local web stack.
+- If PostgreSQL will not start, another service may already be using port `5432`.
+- If the browser shows a 404, make sure your web server is pointing at the project folder.
 
 ## License
 

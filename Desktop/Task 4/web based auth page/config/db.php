@@ -10,14 +10,17 @@ function db(): PDO
         return $pdo;
     }
 
-    $host = env('DB_HOST', 'localhost');
-    $port = env('DB_PORT', '3306');
-    $name = env('DB_NAME', 'auth_assignment');
-    $user = env('DB_USER', 'root');
-    $pass = env('DB_PASS', '');
-    $charset = env('DB_CHARSET', 'utf8mb4');
+    if (!in_array('pgsql', PDO::getAvailableDrivers(), true)) {
+        die('The PDO PostgreSQL driver is not enabled. Please install or enable the pdo_pgsql extension in PHP.');
+    }
 
-    $dsn = sprintf('mysql:host=%s;port=%s;dbname=%s;charset=%s', $host, $port, $name, $charset);
+    $host = env('DB_HOST', 'localhost');
+    $port = env('DB_PORT', '5432');
+    $name = env('DB_NAME', 'auth_assignment');
+    $user = env('DB_USER', 'postgres');
+    $pass = env('DB_PASS', '');
+
+    $dsn = sprintf('pgsql:host=%s;port=%s;dbname=%s', $host, $port, $name);
 
     try {
         $pdo = new PDO($dsn, $user, $pass, [
@@ -25,7 +28,7 @@ function db(): PDO
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ]);
     } catch (PDOException $exception) {
-        die('Database connection failed. Please check your MySQL credentials in the .env file.');
+        die('Database connection failed. Please check your PostgreSQL credentials in the .env file.');
     }
 
     return $pdo;
