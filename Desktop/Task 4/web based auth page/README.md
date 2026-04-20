@@ -70,7 +70,7 @@ It includes:
    If you prefer Apache, place the project inside your web root and open the matching local URL.
 
    If Apache uses a different port, include it in the URL, for example:
-   - `http://localhost:8080/index.php`
+   - `http://127.0.0.1:8080/index.php`
 
 ## How It Works
 
